@@ -33,6 +33,8 @@ Finishing off:
 ## Connecting to the P1 meter
 Connect the esp8266 to an RJ11 cable/connector following the diagram.
 
+**Note: when using a 4-pin RJ11 connector (instead of a 6-pin connector), pin 1 and 6 are the pins that are not present, so the first pin is pin 2 and the last pin is pin 5**
+
 | P1 pin   | ESP8266 Pin |
 | ----     | ---- |
 | 2 - RTS  | 3.3v |
