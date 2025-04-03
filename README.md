@@ -1,9 +1,12 @@
 # esp8266_p1meter
 
-Software for the ESP2866 that sends P1 smart meter data to an mqtt broker (with OTA firmware updates)
+Software for the ESP2866 that sends P1 smart meter data to an mqtt broker
 
 ## about this fork
-This fork (tries) to add support for the `Landys and Gyr E360` smartmeter (DSMR5.0)
+This fork (tries) to add support for the `ISKRA AM550` smartmeter (DSMR5.0). It is based on the fork by Daniel Jong https://github.com/daniel-jong/esp8266_p1meter.
+
+3 April 2025: Its working on a breadboard, but I ordered PCB to make a compact version and will create a 3D printable box.
+
 
 The ![original source](https://github.com/fliphess/esp8266_p1meter) has issues with DSMR5.0 meters who like to send telegrams every 1 second at a high 115200 baud rate. 
 This causes the used SoftwareSerial to struggle to keep up and thus only receives corrupted messages. This fork switches to using the main Hardware serial port (RX) for communication with the meter.
@@ -12,18 +15,17 @@ This causes the used SoftwareSerial to struggle to keep up and thus only receive
 This setup requires:
 - An esp8266 (nodeMcu and Wemos d1 mini have been tested)
 - A 10k ohm resistor
-- A 4 pin RJ11 or [6 pin RJ12 cable](https://www.tinytronics.nl/shop/nl/kabels/adapters/rj12-naar-6-pins-dupont-jumper-adapter) Both cables work great, but a 6 pin cable can also power the esp8266 on most DSMR5+ meters.
+- A 4,7k ohm resistor
+- A BC547 NPN transistor
+- A [6 pin RJ12 cable](https://www.tinytronics.nl/shop/nl/kabels/adapters/rj12-naar-6-pins-dupont-jumper-adapter) A 6 pin cable can also power the esp8266 on most DSMR5+ meters.
 
-Compiling up using Arduino IDE:
+Compiling up using Arduino IDE: 
+I will try and extend this section, as it was the first time I actually did something with IDE.
 - Ensure you have selected the right board
 - Using the Tools->Manage Libraries... install `PubSubClient` and `WifiManager`
-- In the file `Settings.h` change `OTA_PASSWORD` to a safe secret value
 - Flash the software
 
-Compiling up using PlatformIO:
-- Ensure the correct board type is selected in project configuration
-- In the file `Settings.h` change `OTA_PASSWORD` to a safe secret value
-- Upload the software.
+I removed the PlatformIO version as I have no experience and have not used it. Please refer to the origin of this fork if you want to use it.
 
 Finishing off:
 - You should now see a new wifi network `ESP******` connect to this wifi network, a popup should appear, else manually navigate to `192.168.4.1`
@@ -31,7 +33,9 @@ Finishing off:
 - To check if everything is up and running you can listen to the MQTT topic `hass/status`, on startup a single message is sent.
 
 ## Connecting to the P1 meter
-Connect the esp8266 to an RJ11 cable/connector following the diagram.
+Connect the esp8266 to an RJ12 cable/connector following the diagram.
+
+3 April 2025: I will share my drawings soon.
 
 **Note: when using a 4-pin RJ11 connector (instead of a 6-pin connector), pin 1 and 6 are the pins that are not present, so the first pin is pin 2 and the last pin is pin 5**
 
