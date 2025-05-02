@@ -20,9 +20,6 @@
 // * The hostname of our little creature
 #define HOSTNAME "p1meter"
 
-// * The password used for OTA
-#define OTA_PASSWORD "admin"
-
 // * Wifi timeout in milliseconds
 #define WIFI_TIMEOUT 30000
 
