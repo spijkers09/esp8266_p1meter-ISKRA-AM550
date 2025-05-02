@@ -1,15 +1,15 @@
 # esp8266_p1meter
 
-Software for the ESP2866 that sends P1 smart meter data to an mqtt broker
+Software for the ESP2866 that sends P1 smart meter data to a mqtt broker
 
 ## about this fork
 This fork (tries) to add support for the `ISKRA AM550` smartmeter (DSMR5.0). It is based on the fork by Daniel Jong https://github.com/daniel-jong/esp8266_p1meter.
 
 3 April 2025: Its working on a breadboard, but I ordered PCB to make a compact version and will create a 3D printable box.
-2 May 2025: After some delay I received the PCB I designed. Turned out the bases I used was not entirely accurate, so it was 2 mm wider then the ESP8266. I have changed the design of the PCB
-to match the ESP8266.
+2 May 2025: After some delay I received the PCB I designed. Turned out the bases I used was not entirely accurate, so it was 2 mm wider then the ESP8266. I have changed the design of the PCB to match the ESP8266. The correct design is in the directory.
+If you want to use a breadboard, use the schematic.pdf
 
-BE AWARE: I lost 1 ESP8266 because I soldered the PCB directly to the ESP before I had uploaded the software. Not sure why, but then upload is no longer working. Make sure you use the provided pinheader to make it detachable.
+BE AWARE: I lost 1 ESP8266 because I soldered the PCB directly to the ESP before I had uploaded the software. Not sure why, but then upload is no longer working. Make sure you use the provided pinheader to make it detachable. That will also provide future update possibilities.
 
 The ![original source](https://github.com/fliphess/esp8266_p1meter) has issues with DSMR5.0 meters who like to send telegrams every 1 second at a high 115200 baud rate. 
 This causes the used SoftwareSerial to struggle to keep up and thus only receives corrupted messages. This fork switches to using the main Hardware serial port (RX) for communication with the meter.
@@ -20,6 +20,7 @@ This setup requires:
 - A 10k ohm resistor
 - A 4,7k ohm resistor
 - A BC547 NPN transistor
+- A modular RJ12 jack (see pdf)
 - A [6 pin RJ12 cable](https://www.tinytronics.nl/shop/nl/kabels/adapters/rj12-naar-6-pins-dupont-jumper-adapter) A 6 pin cable can also power the esp8266 on most DSMR5+ meters.
 
 Compiling up using Arduino IDE: 
@@ -38,26 +39,16 @@ Finishing off:
 - Configure your wifi and Mqtt settings
 - It is usefull to create a separate user in HomeAssistant for MQTT. I created the user mqttuser and gave a password.
 - The mqtt host adress is your homeassistant IP and use 1883 for the port.
-- You can use the serial monitor function (also under <Tools>) to see the ESP waking up and trying to connect.
+- You can use the serial monitor function of Arduino IDE (also under <Tools>) to see the ESP waking up and trying to connect.
 - To check if everything is up and running you can listen to the MQTT topic `hass/status`, on startup a single message is sent.
 
 ## Connecting to the P1 meter
 Connect the esp8266 to an RJ12 cable/connector following the diagram.
 
-3 April 2025: I will share my drawings soon.
-
-**Note: when using a 4-pin RJ11 connector (instead of a 6-pin connector), pin 1 and 6 are the pins that are not present, so the first pin is pin 2 and the last pin is pin 5**
-
-| P1 pin   | ESP8266 Pin |
-| ----     | ---- |
-| 2 - RTS  | 3.3v |
-| 3 - GND  | GND  |
-| 4 -      |      |
-| 5 - RXD (data) | RX (gpio3) |
-
-On most Landys and Gyr models a 10K resistor should be used between the ESP's 3.3v and the p1's DATA (RXD) pin. Many howto's mention RTS requires 5V (VIN) to activate the P1 port, but for me 3V3 suffices.
-
-![Wiring](https://raw.githubusercontent.com/daniel-jong/esp8266_p1meter/master/assets/esp8266_p1meter_bb.png)
+2 May 2025: Schematic.pdf is the electrical schematic. You can use it wire a breadboard. P1meterv2.kicad_pcb is the file I used to order the PCB.
+It uses the open source KiCad software.
+The datablad PDF suggests a modular jack to use. 
+BE AWARE: most jacks are reversed (locking clip below/at PCB side). I used the wrong one, so I had to rotate 1 of the connectors 180. Which means a standard RJ12 cable will not work with the setup. Either order a correct jack or an RJ12 shrink tool.
 
 ### Optional: Powering the esp8266 using your DSMR5+ meter 
 <details><summary>Expand to see wiring description</summary>
@@ -112,7 +103,7 @@ sensors/power/p1meter/short_power_peaks 0
 
 Use this [example](https://raw.githubusercontent.com/daniel-jong/esp8266_p1meter/master/assets/p1_sensors.yaml) for home assistant's `sensor.yaml`
 
-The automatons are yours to create.
+The automations are yours to create.
 And always remember that sending alerts in case of a power outtage only make sense when you own a UPS battery :)
 
 ## Thanks to
