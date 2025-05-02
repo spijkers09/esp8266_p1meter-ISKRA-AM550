@@ -85,10 +85,8 @@ bool mqtt_reconnect()
             Serial.println(F("MQTT connected!"));
 
             // * Once connected, publish an announcement...
-            char *message = new char[16 + strlen(HOSTNAME) + 1];
-            strcpy(message, "p1 meter alive: ");
-            strcat(message, HOSTNAME);
-            mqtt_client.publish("hass/status", message);
+
+            mqtt_client.publish("hass/status", "p1 meter alive: " HOSTNAME);
 
             Serial.printf("MQTT root topic: %s\n", MQTT_ROOT_TOPIC);
         }
@@ -486,54 +484,6 @@ void save_wifi_config_callback ()
     shouldSaveConfig = true;
 }
 
-// **********************************
-// * Setup OTA                      *
-// **********************************
-
-void setup_ota()
-{
-    Serial.println(F("Arduino OTA activated."));
-
-    // * Port defaults to 8266
-    ArduinoOTA.setPort(8266);
-
-    // * Set hostname for OTA
-    ArduinoOTA.setHostname(HOSTNAME);
-    ArduinoOTA.setPassword(OTA_PASSWORD);
-
-    ArduinoOTA.onStart([]()
-    {
-        Serial.println(F("Arduino OTA: Start"));
-    });
-
-    ArduinoOTA.onEnd([]()
-    {
-        Serial.println(F("Arduino OTA: End (Running reboot)"));
-    });
-
-    ArduinoOTA.onProgress([](unsigned int progress, unsigned int total)
-    {
-        Serial.printf("Arduino OTA Progress: %u%%\r", (progress / (total / 100)));
-    });
-
-    ArduinoOTA.onError([](ota_error_t error)
-    {
-        Serial.printf("Arduino OTA Error[%u]: ", error);
-        if (error == OTA_AUTH_ERROR)
-            Serial.println(F("Arduino OTA: Auth Failed"));
-        else if (error == OTA_BEGIN_ERROR)
-            Serial.println(F("Arduino OTA: Begin Failed"));
-        else if (error == OTA_CONNECT_ERROR)
-            Serial.println(F("Arduino OTA: Connect Failed"));
-        else if (error == OTA_RECEIVE_ERROR)
-            Serial.println(F("Arduino OTA: Receive Failed"));
-        else if (error == OTA_END_ERROR)
-            Serial.println(F("Arduino OTA: End Failed"));
-    });
-
-    ArduinoOTA.begin();
-    Serial.println(F("Arduino OTA finished"));
-}
 
 // **********************************
 // * Setup MDNS discovery service   *
@@ -567,7 +517,7 @@ void setup()
     Serial.flush();
 
     // Invert the RX serialport by setting a register value, this way the TX might continue normally allowing the serial monitor to read println's
-    USC0(UART0) = USC0(UART0) | BIT(UCRXI);
+   // USC0(UART0) = USC0(UART0) | BIT(UCRXI);
     Serial.println("Serial port is ready to recieve.");
 
     // * Set led pin as output
@@ -651,7 +601,7 @@ void setup()
     digitalWrite(LED_BUILTIN, LOW);
 
     // * Configure OTA
-    setup_ota();
+    // setup_ota();
 
     // * Startup MDNS Service
     setup_mdns();
@@ -669,7 +619,7 @@ void setup()
 
 void loop()
 {
-    ArduinoOTA.handle();
+    // ArduinoOTA.handle();
     long now = millis();
 
     if (!mqtt_client.connected())
