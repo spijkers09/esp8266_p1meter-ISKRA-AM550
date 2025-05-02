@@ -6,6 +6,7 @@ Software for the ESP2866 that sends P1 smart meter data to a mqtt broker
 This fork (tries) to add support for the `ISKRA AM550` smartmeter (DSMR5.0). It is based on the fork by Daniel Jong https://github.com/daniel-jong/esp8266_p1meter.
 
 3 April 2025: Its working on a breadboard, but I ordered PCB to make a compact version and will create a 3D printable box.
+
 2 May 2025: After some delay I received the PCB I designed. Turned out the bases I used was not entirely accurate, so it was 2 mm wider then the ESP8266. I have changed the design of the PCB to match the ESP8266. The correct design is in the directory.
 If you want to use a breadboard, use the schematic.pdf
 
