@@ -48,28 +48,9 @@ Connect the esp8266 to an RJ12 cable/connector following the diagram.
 
 2 May 2025: Schematic.pdf is the electrical schematic. You can use it wire a breadboard. P1meterv2.kicad_pcb is the file I used to order the PCB.
 It uses the open source KiCad software.
-The datablad PDF suggests a modular jack to use. 
-BE AWARE: most jacks are reversed (locking clip below/at PCB side). I used the wrong one, so I had to rotate 1 of the connectors 180. Which means a standard RJ12 cable will not work with the setup. Either order a correct jack or an RJ12 shrink tool.
+The datablad PDF suggests a modular jack to use.
 
-### Optional: Powering the esp8266 using your DSMR5+ meter 
-<details><summary>Expand to see wiring description</summary>
-<p>
-  
-When using a 6 pin cable you can use the power source provided by the meter.
-  
-| P1 pin   | ESP8266 Pin |
-| ----     | ---- |
-| 1 - 5v out | 5v or Vin |
-| 2 - RTS  | 3.3v |
-| 3 - GND  | GND  |
-| 4 -      |      |
-| 5 - RXD (data) | RX (gpio3) |
-| 6 - GND  | GND  |
-
-![Wiring powered by meter](https://raw.githubusercontent.com/daniel-jong/esp8266_p1meter/master/assets/esp8266_p1meter_bb_PoweredByMeter.png)
-
-</p>
-</details>
+BE AWARE: most jacks are reversed (locking clip below/at PCB side). I used the wrong (reversed) one, so I had to rotate 1 of the connectors 180. Which means a standard RJ12 cable will not work with the setup. Either order a correct jack or an RJ12 shrink tool.
 
 ## Data Sent
 
