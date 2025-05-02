@@ -6,14 +6,17 @@ Software for the ESP2866 that sends P1 smart meter data to an mqtt broker
 This fork (tries) to add support for the `ISKRA AM550` smartmeter (DSMR5.0). It is based on the fork by Daniel Jong https://github.com/daniel-jong/esp8266_p1meter.
 
 3 April 2025: Its working on a breadboard, but I ordered PCB to make a compact version and will create a 3D printable box.
+2 May 2025: After some delay I received the PCB I designed. Turned out the bases I used was not entirely accurate, so it was 2 mm wider then the ESP8266. I have changed the design of the PCB
+to match the ESP8266.
 
+BE AWARE: I lost 1 ESP8266 because I soldered the PCB directly to the ESP before I had uploaded the software. Not sure why, but then upload is no longer working. Make sure you use the provided pinheader to make it detachable.
 
 The ![original source](https://github.com/fliphess/esp8266_p1meter) has issues with DSMR5.0 meters who like to send telegrams every 1 second at a high 115200 baud rate. 
 This causes the used SoftwareSerial to struggle to keep up and thus only receives corrupted messages. This fork switches to using the main Hardware serial port (RX) for communication with the meter.
 
 # Getting started
 This setup requires:
-- An esp8266 (nodeMcu and Wemos d1 mini have been tested)
+- An esp8266 (I used Wemos d1 mini V4 with USB-C)
 - A 10k ohm resistor
 - A 4,7k ohm resistor
 - A BC547 NPN transistor
@@ -21,15 +24,21 @@ This setup requires:
 
 Compiling up using Arduino IDE: 
 I will try and extend this section, as it was the first time I actually did something with IDE.
-- Ensure you have selected the right board
-- Using the Tools->Manage Libraries... install `PubSubClient` and `WifiManager`
-- Flash the software
+- Ensure you have selected the right board. I selected LOLIN (Wemos) D1 Mini (clone)
+- Using the Tools->Manage Libraries... install `PubSubClient (by Nick)` and `WifiManager (by tzapu)`. I installed several other libraries (at Arduino's request) ESP82266Autowifi
+- Verify the software. This should indicate errors (like missing functions/libraries)
+- Connect the board to your computer. Under <Tools>/Com port select the correct port. For some reason it showed 2 in my case, then just try to select one.
+- If the upload does not work, select the other
+- Upload the software
 
 I removed the PlatformIO version as I have no experience and have not used it. Please refer to the origin of this fork if you want to use it.
 
 Finishing off:
 - You should now see a new wifi network `ESP******` connect to this wifi network, a popup should appear, else manually navigate to `192.168.4.1`
 - Configure your wifi and Mqtt settings
+- It is usefull to create a separate user in HomeAssistant for MQTT. I created the user mqttuser and gave a password.
+- The mqtt host adress is your homeassistant IP and use 1883 for the port.
+- You can use the serial monitor function (also under <Tools>) to see the ESP waking up and trying to connect.
 - To check if everything is up and running you can listen to the MQTT topic `hass/status`, on startup a single message is sent.
 
 ## Connecting to the P1 meter
