@@ -1,16 +1,16 @@
-# esp8266_p1meter
+# esp8266_p1meter for ISKRA AM550
 
-Software for the ESP2866 that sends P1 smart meter data to a mqtt broker
+Software for the ESP2866 that sends P1 smart meter data to a mqtt broker, specifically adjusted for ISKRA AM550. The software changes are limited (removed the inversion). The hardware is updated big time. 
 
 ## about this fork
-This fork (tries) to add support for the `ISKRA AM550` smartmeter (DSMR5.0). It is based on the fork by Daniel Jong https://github.com/daniel-jong/esp8266_p1meter.
+This fork (tries) to add support for the `ISKRA AM550` smartmeter (DSMR5.0). It is based on the fork by Daniel Jong https://github.com/daniel-jong/esp8266_p1meter. It also used some of the info from https://github.com/psvanstrom/esphome-p1reader
 
 3 April 2025: Its working on a breadboard, but I ordered PCB to make a compact version and will create a 3D printable box.
 
 2 May 2025: After some delay I received the PCB I designed. Turned out the bases I used was not entirely accurate, so it was 2 mm wider then the ESP8266. I have changed the design of the PCB to match the ESP8266. The correct design is in the directory.
 If you want to use a breadboard, use the schematic.pdf
 
-BE AWARE: I lost 1 ESP8266 because I soldered the PCB directly to the ESP before I had uploaded the software. Not sure why, but then upload is no longer working. Make sure you use the provided pinheader to make it detachable. That will also provide future update possibilities.
+BE AWARE: I lost 1 ESP8266 because I soldered the PCB directly to the ESP before I had uploaded the software. Not sure why, but then upload is no longer working. Make sure you use the provided pinheaders to make it detachable. That will also provide future update possibilities.
 
 The ![original source](https://github.com/fliphess/esp8266_p1meter) has issues with DSMR5.0 meters who like to send telegrams every 1 second at a high 115200 baud rate. 
 This causes the used SoftwareSerial to struggle to keep up and thus only receives corrupted messages. This fork switches to using the main Hardware serial port (RX) for communication with the meter.
@@ -21,13 +21,13 @@ This setup requires:
 - A 10k ohm resistor
 - A 4,7k ohm resistor
 - A BC547 NPN transistor
-- A modular RJ12 jack (see pdf)
-- A [6 pin RJ12 cable](https://www.tinytronics.nl/shop/nl/kabels/adapters/rj12-naar-6-pins-dupont-jumper-adapter) A 6 pin cable can also power the esp8266 on most DSMR5+ meters.
+- A modular RJ12 jack (see datablad)
+- A [6 pin RJ12 cable]
 
 Compiling up using Arduino IDE: 
 I will try and extend this section, as it was the first time I actually did something with IDE.
 - Ensure you have selected the right board. I selected LOLIN (Wemos) D1 Mini (clone)
-- Using the Tools->Manage Libraries... install `PubSubClient (by Nick)` and `WifiManager (by tzapu)`. I installed several other libraries (at Arduino's request) ESP82266Autowifi
+- Using the Tools->Manage Libraries... install `PubSubClient (by Nick)` and `WifiManager (by tzapu)`. I installed several other libraries (at Arduino's request, for example ESP82266Autowifi)
 - Verify the software. This should indicate errors (like missing functions/libraries)
 - Connect the board to your computer. Under <Tools>/Com port select the correct port. For some reason it showed 2 in my case, then just try to select one.
 - If the upload does not work, select the other
@@ -46,11 +46,11 @@ Finishing off:
 ## Connecting to the P1 meter
 Connect the esp8266 to an RJ12 cable/connector following the diagram.
 
-2 May 2025: Schematic.pdf is the electrical schematic. You can use it wire a breadboard. P1meterv2.kicad_pcb is the file I used to order the PCB.
+2 May 2025: Schematic.pdf is the electrical schematic. You can use it wire a breadboard. P1meterv2.kicad_pcb is the updated file I used to order the PCB.
 It uses the open source KiCad software.
 The datablad PDF suggests a modular jack to use.
 
-BE AWARE: most jacks are reversed (locking clip below/at PCB side). I used the wrong (reversed) one, so I had to rotate 1 of the connectors 180. Which means a standard RJ12 cable will not work with the setup. Either order a correct jack or an RJ12 shrink tool.
+BE AWARE: most jacks are reversed (locking clip below/at PCB side). I used the wrong, reversed one (see the pictures in the assets directory), so I had to rotate 1 of the connectors 180. Which means a standard RJ12 cable will not work with the setup. Either order a correct jack or an RJ12 shrink tool.
 
 ## Data Sent
 
@@ -83,7 +83,7 @@ sensors/power/p1meter/short_power_peaks 0
 
 ## Home Assistant Configuration
 
-Use this [example](https://raw.githubusercontent.com/daniel-jong/esp8266_p1meter/master/assets/p1_sensors.yaml) for home assistant's `sensor.yaml`
+Use this [example](https://raw.githubusercontent.com/spijkers09/esp8266_p1meter-ISKRA-AM550/master/assets/p1_sensors.yaml) for home assistant's `sensor.yaml`
 
 The automations are yours to create.
 And always remember that sending alerts in case of a power outtage only make sense when you own a UPS battery :)
