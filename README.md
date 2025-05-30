@@ -52,6 +52,22 @@ The datablad PDF suggests a modular jack to use.
 
 BE AWARE: most jacks are reversed (locking clip below/at PCB side). I used the wrong, reversed one (see the pictures in the assets directory), so I had to rotate 1 of the connectors 180. Which means a standard RJ12 cable will not work with the setup. Either order a correct jack or an RJ12 shrink tool.
 
+## Box
+
+30 May 2025: I found a really great tool to create a 3D box for PCB's. As mine is a stacked one, I had to fiddle with the settings to make it fit. It only took me 2 runs to create the perfect box.
+
+This is the website of the creator of the tool. There is some explanation how to use it.
+
+https://willem.aandewiel.nl/index.php/2022/01/02/yet-another-parametric-projectbox-generator/
+
+The download location of the tool
+https://github.com/mrWheel/YAPP_Box
+
+The download location of the program used
+https://openscad.org/downloads.html
+
+In the assets I uploaded the tool as a zip (YAPP) and the source file of my box.
+
 ## Data Sent
 
 All metrics are send to their own MQTT topic.
